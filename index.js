@@ -7,9 +7,9 @@ const cors = require("cors");
 
 const port = process.env.PORT || 5000;
 
-app.use(cors());
 app.use(express.json());
 app.use(bodyParser.json());
+app.use(cors());
 
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.6jqkzzd.mongodb.net/?retryWrites=true&w=majority`;
 
@@ -43,6 +43,12 @@ const run = async () => {
       }
 
       res.send({ status: false });
+    });
+
+    app.delete("/user/:id", async (req, res) => {
+      const id = req.params.id;
+      const result = await userCollection.deleteOne({ _id:id });
+      res.send("successfully deleted");
     });
 
     app.patch("/apply", async (req, res) => {
